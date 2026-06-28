@@ -22,6 +22,7 @@ export class HabitModal extends Modal {
 		contentEl.createEl("h2", {text: isEditing ? "Edit habit" : "Add habit"});
 
 		let name = this.habit?.name ?? "";
+		let description = this.habit?.description ?? "";
 		let archived = this.habit?.archived ?? false;
 
 		new Setting(contentEl)
@@ -31,6 +32,17 @@ export class HabitModal extends Modal {
 				text.setValue(name);
 				text.onChange((value) => {
 					name = value.trim();
+				});
+			});
+
+		new Setting(contentEl)
+			.setName("Description")
+			.setDesc("(Optional) Shown when you hover the habit name.")
+			.addTextArea((text) => {
+				text.setPlaceholder("Read for 30min before bed");
+				text.setValue(description);
+				text.onChange((value) => {
+					description = value.trim();
 				});
 			});
 
@@ -57,10 +69,11 @@ export class HabitModal extends Modal {
 					if (isEditing && this.habit) {
 						updateHabit(this.plugin.data, this.habit.id, {
 							name,
+							description,
 							archived,
 						});
 					} else {
-						addHabit(this.plugin.data, name);
+						addHabit(this.plugin.data, name, description);
 					}
 
 					await this.plugin.savePluginData();

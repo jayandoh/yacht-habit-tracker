@@ -8,6 +8,7 @@ export function exportData(data: PluginData): string {
 	const habits = data.habits.map(h => {
 		const out: Record<string, unknown> = {id: h.id, name: h.name, createdAt: h.createdAt};
 		if (h.archived) out.archived = true; // Omit archive status for unarchived habits for a cleaner JSON file
+		if (h.description) out.description = h.description; // Omit blank descriptions for a cleaner JSON file
 		return out;
 	});
 	return JSON.stringify({habits, logs: data.logs}, null, 2);
@@ -83,11 +84,14 @@ export function validateImport(rawText: string): {data: PluginData} | {error: st
 		// Check if `createdAt` follows specified date pattern. If not, replace with today's date.
 		const createdAt =
 			typeof h.createdAt === "string" && dateRegex.test(h.createdAt) ? h.createdAt : today;
+		// Read `description` defensively; non-strings and blanks are treated as absent.
+		const description = typeof h.description === "string" ? h.description.trim() : "";
 		// Ensure `archived` is a boolean. Default to false if non-existent.
 		const archived =
 			typeof h.archived === "boolean" ? h.archived : h.archived !== undefined ? !!h.archived : false;
 		// Build clean `Habit` object, then push to `habits` array.
 		const habit: Habit = {id: h.id as string, name: h.name as string, createdAt};
+		if (description) habit.description = description;
 		if (archived) habit.archived = true;
 		habits.push(habit);
 	}
@@ -164,6 +168,7 @@ export function mergeImport(
 				name: imp.name,
 				createdAt: current.createdAt,
 				...(imp.archived ? {archived: true} : {}),
+				...(imp.description ? {description: imp.description} : {}),
 			};
 			logs[existing.id] = [...(imported.logs[imp.id] ?? [])];
 		} else if (strategy === "mergelogs") {
