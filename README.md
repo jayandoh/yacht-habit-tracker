@@ -2,7 +2,7 @@
 
 Track your habits directly inside of Obsidian. Your habits and logs are all stored locally within the plugin's data, and is easily exportable to another Obsidian vault.
 
-![Demo](https://github.com/jayandoh/obsidian-habit-tracker/blob/master/assets/yacht_demo.gif)
+![Demo](https://github.com/jayandoh/obsidian-habit-tracker/blob/main/assets/yacht_demo.gif)
 
 ## Features
 
