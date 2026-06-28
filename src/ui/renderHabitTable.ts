@@ -92,6 +92,7 @@ function renderHabitRow(
 	const row = tbody.createEl('tr', {cls: 'habit-tracker-row'});
 	const nameCell = row.createEl('td', {cls: 'habit-tracker-name'});
 	const nameSpan = nameCell.createEl('span', {text: habit.name, cls: 'habit-tracker-name-text'});
+	if (habit.description) nameSpan.title = habit.description;
 	nameSpan.addEventListener('click', () => {
 		new HabitModal(plugin.app, plugin, onAfterToggle, habit).open();
 	});
