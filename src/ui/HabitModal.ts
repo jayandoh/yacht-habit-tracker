@@ -28,6 +28,7 @@ export class HabitModal extends Modal {
 		new Setting(contentEl)
 			.setName("Habit name")
 			.addText((text) => {
+				text.inputEl.addClass("placeholder-text");
 				text.setPlaceholder("Read");
 				text.setValue(name);
 				text.onChange((value) => {
@@ -39,6 +40,7 @@ export class HabitModal extends Modal {
 			.setName("Description")
 			.setDesc("(Optional) Shown when you hover the habit name.")
 			.addTextArea((text) => {
+				text.inputEl.addClass("placeholder-text");
 				text.setPlaceholder("Read for 30min before bed");
 				text.setValue(description);
 				text.onChange((value) => {

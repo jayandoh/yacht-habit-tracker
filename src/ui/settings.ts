@@ -33,16 +33,19 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Date window size')
 			.setDesc('Number of days to display as columns in the tracker.')
-			.addText(text => text
-				.setPlaceholder('30')
-				.setValue(String(this.plugin.settings.dateWindowSize))
-				.onChange(async (value) => {
-					const parsed = parseInt(value);
-					if (!isNaN(parsed) && parsed > 0) {
-						this.plugin.settings.dateWindowSize = parsed;
-						await this.plugin.saveSettings();
-					}
-				}));
+			.addText(text => {
+				text.inputEl.addClass("placeholder-text");
+				text
+					.setPlaceholder('30')
+					.setValue(String(this.plugin.settings.dateWindowSize))
+					.onChange(async (value) => {
+						const parsed = parseInt(value);
+						if (!isNaN(parsed) && parsed > 0) {
+							this.plugin.settings.dateWindowSize = parsed;
+							await this.plugin.saveSettings();
+						}
+					});
+			});
 
 		new Setting(containerEl)
 			.setName('Date format')
