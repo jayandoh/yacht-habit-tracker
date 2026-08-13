@@ -101,6 +101,12 @@
 	text-align: center;
 	font-size: var(--font-ui-small);
 }
+.habit-tracker-table td.habit-tracker-empty {
+	padding: 0px 0px 0px 4px;
+    text-align: left;
+	color: var(--text-muted);
+	font-style: italic
+}
 
 /* ─── Habit name column ──────────────────────────────────────────────────── */
 
@@ -169,15 +175,6 @@ td.habit-tracker-today {
 	font-size: 0.75em;
 	font-weight: 600;
 	color: var(--color-orange);
-}
-
-/* ─── Empty state ────────────────────────────────────────────────────────── */
-
-.habit-tracker-empty {
-	text-align: center;
-	color: var(--text-muted);
-	padding: 24px 0;
-	font-style: italic;
 }
 
 /* ─── Code block host ────────────────────────────────────────────────────── */
