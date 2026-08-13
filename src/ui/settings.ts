@@ -34,9 +34,17 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 			.setName('Date window size')
 			.setDesc('Number of days to display as columns in the tracker.')
 			.addText(text => {
+				// Fall back to the default when the field is left empty
+				text.inputEl.addEventListener('blur', async () => {
+					if (text.getValue().trim() === '') {
+						text.setValue(String(DEFAULT_SETTINGS.dateWindowSize));
+						this.plugin.settings.dateWindowSize = DEFAULT_SETTINGS.dateWindowSize;
+						await this.plugin.saveSettings();
+					}
+				});
 				text.inputEl.addClass("placeholder-text");
 				text
-					.setPlaceholder('30')
+					.setPlaceholder(String(DEFAULT_SETTINGS.dateWindowSize))
 					.setValue(String(this.plugin.settings.dateWindowSize))
 					.onChange(async (value) => {
 						const parsed = parseInt(value);
@@ -50,12 +58,24 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 		new Setting(containerEl)
 			.setName('Date format')
 			.setDesc('Format for date column headers (e.g. M/D).')
-			.addText(text => text
-				.setValue(this.plugin.settings.dateFormat)
-				.onChange(async (value) => {
-					this.plugin.settings.dateFormat = value;
-					await this.plugin.saveSettings();
-				}));
+			.addText(text => {
+				// Fall back to the default when the field is left empty
+				text.inputEl.addEventListener('blur', async () => {
+					if (text.getValue().trim() === '') {
+						text.setValue(String(DEFAULT_SETTINGS.dateFormat));
+						this.plugin.settings.dateFormat = DEFAULT_SETTINGS.dateFormat;
+						await this.plugin.saveSettings();
+					}
+				});
+				text.inputEl.addClass("placeholder-text");
+				text
+					.setPlaceholder(String(DEFAULT_SETTINGS.dateFormat))
+					.setValue(this.plugin.settings.dateFormat)
+					.onChange(async (value) => {
+						this.plugin.settings.dateFormat = value;
+						await this.plugin.saveSettings();
+					});
+			});
 
 		new Setting(containerEl)
 			.setName('Show archived habits')
