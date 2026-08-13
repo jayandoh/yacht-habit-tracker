@@ -121,6 +121,13 @@
 	text-decoration: underline;
 }
 
+/* ─── Placeholder text ───────────────────────────────────────────────────── */
+
+.placeholder-text::placeholder {
+    font-style: italic;
+    opacity: 0.5;
+}
+
 /* ─── Date columns ───────────────────────────────────────────────────────── */
 
 .habit-tracker-date-col {
