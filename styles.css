@@ -20,6 +20,7 @@
 }
 
 .habit-tracker-add-btn,
+.habit-tracker-archive-btn,
 .habit-tracker-reorder-btn {
 	background: none;
 	border: none;
@@ -36,6 +37,7 @@
 }
 
 .habit-tracker-add-btn:hover,
+.habit-tracker-archive-btn:hover,
 .habit-tracker-reorder-btn:hover {
 	color: var(--text-normal);
 }
