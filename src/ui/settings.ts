@@ -9,9 +9,11 @@ export interface HabitTrackerPluginSettings {
 	dateWindowSize: number;   // Number of days to show as columns
 	dateFormat: string;       // Format for column headers (e.g. M/D)
 	showArchived: boolean;    // Whether to show archived habits
+	title: string;            // Text shown in the tracker header
 }
 
 export const DEFAULT_SETTINGS: HabitTrackerPluginSettings = {
+	title: 'Habit tracker',
 	dateWindowSize: 30,
 	dateFormat: 'M/D',
 	showArchived: false,
@@ -29,6 +31,28 @@ export class HabitTrackerSettingTab extends PluginSettingTab {
 		const {containerEl} = this;
 
 		containerEl.empty();
+
+		new Setting(containerEl)
+			.setName('Title')
+			.setDesc('Text shown in the tracker header, such as a motivational phrase.')
+			.addText(text => {
+				// Fall back to the default when the field is left empty
+				text.inputEl.addEventListener('blur', () => {
+					if (text.getValue().trim() === '') {
+						text.setValue(DEFAULT_SETTINGS.title);
+						this.plugin.settings.title = DEFAULT_SETTINGS.title;
+						void this.plugin.saveSettings();
+					}
+				});
+				text.inputEl.addClass("placeholder-text");
+				text
+					.setPlaceholder(DEFAULT_SETTINGS.title)
+					.setValue(this.plugin.settings.title)
+					.onChange(async (value) => {
+						this.plugin.settings.title = value;
+						await this.plugin.saveSettings();
+					});
+			});
 
 		new Setting(containerEl)
 			.setName('Date window size')

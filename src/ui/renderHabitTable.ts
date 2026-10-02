@@ -4,6 +4,7 @@ import {toggleHabitDate, getStreak} from '../data/database';
 import {HabitModal} from './HabitModal';
 import {ReorderModal} from './ReorderModal';
 import {toLocalDateString} from '../utils';
+import {DEFAULT_SETTINGS} from './settings';
 
 /*
  * Renders the full habit tracker UI into `container`.
@@ -70,7 +71,7 @@ function renderActionBar(
 	plugin: HabitTrackerPlugin,
 	onAfterToggle: () => void,
 ): void {
-	container.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
+	container.createEl('span', {text: plugin.settings.title.trim() || DEFAULT_SETTINGS.title, cls: 'habit-tracker-title'});
 	const actions = container.createDiv({cls: 'habit-tracker-actions'});
 	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
 	reorderBtn.addEventListener('click', () => {
