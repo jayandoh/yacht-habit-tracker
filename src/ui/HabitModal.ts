@@ -38,7 +38,7 @@ export class HabitModal extends Modal {
 
 		new Setting(contentEl)
 			.setName("Description")
-			.setDesc("(Optional) Shown when you hover the habit name.")
+			.setDesc("Optional. Shown when you hover the habit name.")
 			.addTextArea((text) => {
 				text.inputEl.addClass("placeholder-text");
 				text.setPlaceholder("Read for 30min before bed");
