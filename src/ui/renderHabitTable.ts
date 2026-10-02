@@ -72,6 +72,17 @@ function renderActionBar(
 ): void {
 	container.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
 	const actions = container.createDiv({cls: 'habit-tracker-actions'});
+	const showArchived = plugin.settings.showArchived;
+	const archiveBtn = actions.createEl('button', {
+		text: showArchived ? '👁' : '🚫',
+		cls: 'habit-tracker-archive-btn',
+	});
+	archiveBtn.title = showArchived ? 'Hide archived habits' : 'Show archived habits';
+	archiveBtn.setAttribute('aria-label', archiveBtn.title);
+	archiveBtn.addEventListener('click', () => {
+		plugin.settings.showArchived = !showArchived;
+		void plugin.saveSettings();
+	});
 	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
 	reorderBtn.addEventListener('click', () => {
 		new ReorderModal(plugin.app, plugin, onAfterToggle).open();
