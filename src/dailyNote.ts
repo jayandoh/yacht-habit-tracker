@@ -1,4 +1,5 @@
 import {App, Notice, TFile, moment, normalizePath} from 'obsidian';
+import {CreateDailyNoteModal} from './ui/CreateDailyNoteModal';
 
 interface DailyNoteOptions {
 	folder?: string;
@@ -30,8 +31,21 @@ async function ensureFolder(app: App, folder: string): Promise<void> {
 	await app.vault.createFolder(folder);
 }
 
+async function createAndOpen(app: App, path: string, options: DailyNoteOptions): Promise<void> {
+	try {
+		const template = await readTemplate(app, options.template?.trim());
+		await ensureFolder(app, path.substring(0, path.lastIndexOf('/')));
+		const file = await app.vault.create(path, template);
+		await app.workspace.getLeaf(false).openFile(file);
+	} catch (error) {
+		console.error('Habit tracker: failed to create daily note', error);
+		new Notice('Could not create the daily note.');
+	}
+}
+
 /*
- * Opens the daily note for `dateStr` (YYYY-MM-DD), creating it if it doesn't exist.
+ * Opens the daily note for `dateStr` (YYYY-MM-DD). If it doesn't exist, asks the user
+ * whether to create it first.
  * Honors the core Daily notes plugin's folder, date format and template settings.
  */
 export async function openDailyNote(app: App, dateStr: string): Promise<void> {
@@ -43,16 +57,11 @@ export async function openDailyNote(app: App, dateStr: string): Promise<void> {
 		const path = normalizePath(folder ? `${folder}/${name}.md` : `${name}.md`);
 
 		const existing = app.vault.getAbstractFileByPath(path);
-		let file: TFile;
 		if (existing instanceof TFile) {
-			file = existing;
-		} else {
-			const template = await readTemplate(app, options.template?.trim());
-			const parent = path.substring(0, path.lastIndexOf('/'));
-			await ensureFolder(app, parent);
-			file = await app.vault.create(path, template);
+			await app.workspace.getLeaf(false).openFile(existing);
+			return;
 		}
-		await app.workspace.getLeaf(false).openFile(file);
+		new CreateDailyNoteModal(app, () => createAndOpen(app, path, options)).open();
 	} catch (error) {
 		console.error('Habit tracker: failed to open daily note', error);
 		new Notice('Could not open the daily note.');
