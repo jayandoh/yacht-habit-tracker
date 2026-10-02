@@ -1,10 +1,12 @@
 import {App, Modal, Setting} from 'obsidian';
 
 export class CreateDailyNoteModal extends Modal {
+	private readonly filename: string;
 	private readonly onConfirm: () => void | Promise<void>;
 
-	constructor(app: App, onConfirm: () => void | Promise<void>) {
+	constructor(app: App, filename: string, onConfirm: () => void | Promise<void>) {
 		super(app);
+		this.filename = filename;
 		this.onConfirm = onConfirm;
 	}
 
@@ -14,7 +16,7 @@ export class CreateDailyNoteModal extends Modal {
 		// Title casing is specified in the issue request
 		// eslint-disable-next-line obsidianmd/ui/sentence-case
 		this.setTitle('New Daily Note');
-		contentEl.createEl('p', {text: 'File does not exist. Would you like to create it?'});
+		contentEl.createEl('p', {text: `File ${this.filename} does not exist. Would you like to create it?`});
 
 		new Setting(contentEl)
 			.addButton((button) => {
