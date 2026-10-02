@@ -139,6 +139,11 @@
 .habit-tracker-date-col {
 	min-width: 36px;
 	color: var(--text-muted);
+	cursor: pointer;
+}
+
+.habit-tracker-date-col:hover {
+	color: var(--text-normal);
 }
 
 /* ─── Today highlight ────────────────────────────────────────────────────── */
