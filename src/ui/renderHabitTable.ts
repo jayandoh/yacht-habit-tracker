@@ -4,6 +4,7 @@ import {toggleHabitDate, getStreak} from '../data/database';
 import {HabitModal} from './HabitModal';
 import {ReorderModal} from './ReorderModal';
 import {toLocalDateString} from '../utils';
+import {openDailyNote} from '../dailyNote';
 
 /*
  * Renders the full habit tracker UI into `container`.
@@ -38,6 +39,10 @@ export function renderHabitTable(
 			cls: 'habit-tracker-date-col',
 		});
 		if (isToday(date)) th.addClass('habit-tracker-today');
+		th.title = 'Open daily note';
+		th.addEventListener('click', () => {
+			void openDailyNote(plugin.app, date);
+		});
 	}
 
 	// Table body rows
