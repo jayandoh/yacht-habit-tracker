@@ -1,3 +1,4 @@
+import {setIcon} from 'obsidian';
 import type HabitTrackerPlugin from '../main';
 import type {Habit} from '../types';
 import {toggleHabitDate, getStreak} from '../data/database';
@@ -73,10 +74,8 @@ function renderActionBar(
 	container.createEl('span', {text: 'Habit tracker', cls: 'habit-tracker-title'});
 	const actions = container.createDiv({cls: 'habit-tracker-actions'});
 	const showArchived = plugin.settings.showArchived;
-	const archiveBtn = actions.createEl('button', {
-		text: showArchived ? '👁' : '🚫',
-		cls: 'habit-tracker-archive-btn',
-	});
+	const archiveBtn = actions.createEl('button', {cls: 'habit-tracker-archive-btn'});
+	setIcon(archiveBtn, showArchived ? 'eye' : 'eye-off');
 	archiveBtn.title = showArchived ? 'Hide archived habits' : 'Show archived habits';
 	archiveBtn.setAttribute('aria-label', archiveBtn.title);
 	archiveBtn.addEventListener('click', () => {
