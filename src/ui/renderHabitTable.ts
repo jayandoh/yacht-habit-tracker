@@ -1,3 +1,4 @@
+import {setIcon} from 'obsidian';
 import type HabitTrackerPlugin from '../main';
 import type {Habit} from '../types';
 import {toggleHabitDate, getStreak} from '../data/database';
@@ -73,6 +74,15 @@ function renderActionBar(
 ): void {
 	container.createEl('span', {text: plugin.settings.title.trim() || DEFAULT_SETTINGS.title, cls: 'habit-tracker-title'});
 	const actions = container.createDiv({cls: 'habit-tracker-actions'});
+	const showArchived = plugin.settings.showArchived;
+	const archiveBtn = actions.createEl('button', {cls: 'habit-tracker-archive-btn'});
+	setIcon(archiveBtn, showArchived ? 'eye' : 'eye-off');
+	archiveBtn.title = showArchived ? 'Hide archived habits' : 'Show archived habits';
+	archiveBtn.setAttribute('aria-label', archiveBtn.title);
+	archiveBtn.addEventListener('click', () => {
+		plugin.settings.showArchived = !showArchived;
+		void plugin.saveSettings();
+	});
 	const reorderBtn = actions.createEl('button', {text: '⇕', cls: 'habit-tracker-reorder-btn'});
 	reorderBtn.addEventListener('click', () => {
 		new ReorderModal(plugin.app, plugin, onAfterToggle).open();
